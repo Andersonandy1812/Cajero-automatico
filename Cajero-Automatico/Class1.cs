@@ -8,15 +8,14 @@ namespace CajeroAutomatico
 {
    public class Administrar_Usuario
    {
-        Seccion_Administrador seccion_Administrador = new Seccion_Administrador();
 
         public static List<UsersA> _UsersAdmin = new List<UsersA>();
 
-        public struct UsersA
+        public  struct UsersA
         {
             public string Name { get; set; }
             public string LastName { get; set; }
-            public string TargetNumber { get; set; }
+            public int TargetNumber { get; set; }
             public string Password { get; set; }
             public double Balance { get; set; }
         }
@@ -102,7 +101,7 @@ namespace CajeroAutomatico
             Console.Write("\t Apellido: ");
             string lastnameUserAdmin = Console.ReadLine();
             Console.Write("\t Número de tarjeta: ");
-            string targetNumberUserAdmin = Console.ReadLine();
+            int targetNumberUserAdmin = Convert.ToInt32(Console.ReadLine());
             Console.Write("\t Contraseña: ");
             string PasswordUserAdmin = Console.ReadLine();
             Console.Write("\t Saldo: ");
@@ -190,23 +189,96 @@ namespace CajeroAutomatico
             else
             {
                 Console.Clear();
-                Console.Write("\t Introduzca el numero de la Tarjeta segun el usuario que desee editar: ");
+                Console.Write("\t Introduzca el numero de la Tarjeta segun el usuario que desee eliminar: ");
                 List_UserAdmin();
-                string targetUser = Console.ReadLine();
+                int targetUser = Convert.ToInt32(Console.ReadLine());
 
                 var User = _UsersAdmin.Find(x => x.TargetNumber == targetUser);
-                if (targetNumber <= 1)
+                if (_UsersAdmin.Count <= 1)
                 {
                     Console.WriteLine("No se puede eliminar usuario ya que no hay mas usuarios administradores");
                 }
                 else
                 {
-                    Delete(_UsersAdmin, (UsersA.TargetNumber - 1));
+                    Delete(_UsersAdmin, (targetUser - 1));
                     Console.WriteLine("\t usuario eliminado! \n");
                     List_UserAdmin();
                     Console.ReadKey();
                 }
             }
+        }
+
+
+        public static void Editpass_admin()
+        {
+            if (_UsersAdmin.Count == 0)
+            {
+                Console.WriteLine("\t Lista de Usuarios vacia ");
+            }
+
+            else
+            {
+                Console.Write("\t Introduzca el numero de la Tarjeta segun el usuario que desee editar: ");
+                string targetUser = Console.ReadLine();
+                var User = _UsersAdmin.Find(x => x.Name == targetUser);
+                if (true)
+                {
+                    if (_UsersAdmin.Contains(User))
+                    {
+
+                        Console.Clear();
+                        Console.WriteLine("\tIntroduzca la nueva contraseña: ");
+                        string newpassword = Console.ReadLine();
+                        Console.Write("\t Introduzca la nueva contraseña de nuevo");
+                        string newpassagain = Console.ReadLine();
+                        if (newpassword == newpassagain)
+                        {
+                            Console.WriteLine("\t Escriba la antigua contraseña para validar que sea usted:");
+                            string oldpass = Console.ReadLine();
+                            var UserA = _UsersAdmin.Find(x => x.Password == oldpass);
+                            if (oldpass == )
+                            {
+                                Console.WriteLine("\t Usuario Editado Con Exito!!");
+                                Seccion_Administrador.Menu_Admin();
+                            }
+                            else
+                            {
+                                Console.WriteLine("\t\tContraseña incorrecta intente de nuevo");
+                                Editpass_admin();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Las contraseñas no coinciden, intentelo de nuevo");
+                            Editpass_admin();
+                        }
+                        User.Password = newpassword;
+                        Console.ReadKey();
+
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("\t\t El numero de tarjeta no es valido o no existe ¿desea un nuevo numero de tarjeta?\n1-Si\n2-No");
+                    int Valid = Convert.ToInt32(Console.ReadLine());
+                    switch (Valid)
+                    {
+                        case 1:
+                            {
+                                Editpass_admin();
+                                break;
+                            }
+                        case 2:
+                            {
+                                Seccion_Administrador.Menu_Admin();
+                            }
+                    }
+                    
+                }
+                } 
+
+
+
         }
         public static void Exit()
         {
@@ -226,57 +298,6 @@ namespace CajeroAutomatico
                         break;
                     }
             }
-        }
-
-        public static void Editpass_admin()
-        {
-            if (_UsersAdmin.Count == 0)
-            {
-                Console.WriteLine("\t Lista de Usuarios vacia ");
-            }
-
-            else
-            {
-                Console.Write("\t Introduzca el numero de la Tarjeta segun el usuario que desee editar: ");
-                string targetUser = Console.ReadLine();
-                var User = _UsersAdmin.Find(x => x.Name == targetUser);
-
-                if (_UsersAdmin.Contains(User))
-                {
-
-                    Console.Clear();
-                    Console.WriteLine("\tIntroduzca la nueva contraseña: ");
-                    string newpassword = Console.ReadLine();
-                    Console.Write("\t Introduzca la nueva contraseña de nuevo");
-                    string newpassagain = Console.ReadLine();
-                    if (newpassword == newpassagain)
-                    {
-                        Console.WriteLine("\t Escriba la antigua contraseña para validar que sea usted:");
-                        string oldpass = Console.ReadLine();
-                        if (oldpass == Password)
-                        {
-                            Console.WriteLine("\t Usuario Editado Con Exito!!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("\t\tContraseña incorrecta intente de nuevo");
-                            Editpass_admin();
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Las contraseñas no coinciden, intentelo de nuevo");
-                        Editpass_admin();
-                    }
-                    User.Password = newpassword;
-                    Console.ReadKey();
-
-                }
-
-            }
-
-
-
         }
 
     }
